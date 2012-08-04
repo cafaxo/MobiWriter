@@ -11,6 +11,22 @@ ExthHeader::ExthHeader() {
 
 bool ExthHeader::generate() {
     try {
+        char creator_software[4];
+        Utils::uintToBytes(201, creator_software);
+        addRecord(CREATOR_SOFTWARE, Utils::bytesToString(creator_software, 4));
+        
+        char creator_version_major[4];
+        Utils::uintToBytes(1, creator_version_major);
+        addRecord(CREATOR_MAJOR_VERSION, Utils::bytesToString(creator_version_major, 4));
+        
+        char creator_version_minor[4];
+        Utils::uintToBytes(2, creator_version_minor);
+        addRecord(CREATOR_MINOR_VERSION, Utils::bytesToString(creator_version_minor, 4));
+        
+        char creator_version_build[4];
+        Utils::uintToBytes(33307, creator_version_build);
+        addRecord(CREATOR_BUILD_NUMBER, Utils::bytesToString(creator_version_build, 4));
+        
         memset(reinterpret_cast<char *>(&exth_header_), 0, sizeof(exth_header_));
 
         Utils::stringToBytes("EXTH", exth_header_.identifier);

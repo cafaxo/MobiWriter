@@ -12,7 +12,7 @@
 class MobiBook {
 public:
     MobiBook(std::string title, std::string author);
-    void addHtml(std::string filename);
+    bool addHtmlFile(std::string filename);
     
     std::string title() const { return title_; }
     std::string author() const { return author_; }
