@@ -56,7 +56,8 @@ struct MobiHeaderStruct {
     char unknown_bytes_5[4];
     char unknown_bytes_6[4];
     char unknown_bytes_7[4];
-    char extra_record_data_flags[4];
+    char unknown_bytes_8[2];
+    char traildata_flags[2];
     char first_indx_record_number[4];
 };
 

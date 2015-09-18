@@ -16,7 +16,7 @@ public:
     
     std::string title() const { return title_; }
     std::string author() const { return author_; }
-    std::string html_content() const { return html_content_; }
+    std::string &html_content() { return html_content_; }
     
 private:
     std::string title_, author_, html_content_;

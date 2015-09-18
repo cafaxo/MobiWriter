@@ -39,26 +39,28 @@ bool MobiHeader::generate(unsigned int text_encoding,
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.extra_index_4, false);
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.extra_index_5, false);
         
-        Utils::uintToBytes(text_records_count + 1, mobi_header_.first_non_book_index, false); // TODO: verify this value
+        Utils::uintToBytes(text_records_count + 1, mobi_header_.first_non_book_index); // TODO: verify this value
         
-        unsigned int book_title_offset = palm_database_header_length
-                                       + palm_doc_header_length
+        unsigned int book_title_offset = palm_doc_header_length
                                        + static_cast<unsigned int>(sizeof(mobi_header_))
                                        + exth_header_length;
         
         Utils::uintToBytes(book_title_offset, mobi_header_.book_title_offset); // TODO: verify book title offset
         Utils::uintToBytes(book_title_length, mobi_header_.book_title_length);
         
-        Utils::uintToBytes(locale, mobi_header_.locale, false);
+        Utils::uintToBytes(locale, mobi_header_.locale);
         
         Utils::uintToBytes(6, mobi_header_.minimum_mobipocket_version);
         
-        Utils::uintToBytes(0xFFFFFFFF, mobi_header_.first_image_index, false); // TODO: verify first image index
+        Utils::uintToBytes(0b1010000, mobi_header_.exth_flags, true);
+        
+        Utils::uintToBytes(text_records_count + 1, mobi_header_.first_image_index); // TODO: verify first image index
+        
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.drm_offset, false);
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.drm_count, false);
         
         Utils::ushortToBytes(1, mobi_header_.first_content_record_number);
-        Utils::ushortToBytes(text_records_count + 1, mobi_header_.last_content_record_number);  // TODO: verify last content record number
+        Utils::ushortToBytes(text_records_count, mobi_header_.last_content_record_number);  // TODO: verify last content record number
         
         Utils::uintToBytes(0x00000001, mobi_header_.unknown_bytes_2, false);
         
@@ -71,7 +73,8 @@ bool MobiHeader::generate(unsigned int text_encoding,
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.unknown_bytes_4, false);
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.unknown_bytes_6, false);
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.unknown_bytes_7, false);
-        Utils::uintToBytes(0xFFFFFFFF, mobi_header_.extra_record_data_flags, false);
+        Utils::ushortToBytes(0x0000, mobi_header_.unknown_bytes_8, false);
+        Utils::ushortToBytes(1, mobi_header_.traildata_flags, true);
         Utils::uintToBytes(0xFFFFFFFF, mobi_header_.first_indx_record_number, false);
         
         data_ = Utils::bytesToString(reinterpret_cast<char *>(&mobi_header_), sizeof(mobi_header_));

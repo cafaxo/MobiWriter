@@ -39,14 +39,17 @@ bool ExthHeader::generate() {
             data_.append(records_[i]);
         }
         
-        unsigned int padding = 4 - (data_.size() % 4);
+        size_t padding = Utils::getFourBytesPadding(data_.size());
         data_.resize(data_.size() + padding);
         
-        if (data_.size() != size_ + padding) {
+        size_ += padding;
+        
+        if (data_.size() != size_) {
             return false;
         }
     } catch (...) {
         data_ = "";
+        
         return false;
     }
     

@@ -22,8 +22,6 @@ public:
     bool write(MobiBook *mobi_book, std::string filename);
     
 private:
-    void generateTextRecords();
-    
     std::vector<std::string> text_records_;
 };
 

@@ -12,7 +12,7 @@ MobiBook::MobiBook(std::string title, std::string author) {
 
 bool MobiBook::addHtmlFile(std::string filename) {
     std::ifstream file(filename.c_str(), std::ifstream::in);
-
+    
     if (!file.is_open()) {
         std::cout << "couldn't open html file: " << filename << std::endl;
         return false;

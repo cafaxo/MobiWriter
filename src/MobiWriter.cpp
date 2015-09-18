@@ -7,7 +7,7 @@
 
 bool MobiWriter::write(MobiBook *mobi_book, std::string filename) {
     for (size_t i = 0; i < mobi_book->html_content().size(); i += 4096) {
-        text_records_.push_back(mobi_book->html_content().substr(i, 4096));
+        text_records_.push_back(mobi_book->html_content().substr(i, 4096) + '\0');
     }
     
     PalmDatabaseHeader palm_database_header = PalmDatabaseHeader(static_cast<unsigned int>(text_records_.size() + 2));
@@ -17,6 +17,11 @@ bool MobiWriter::write(MobiBook *mobi_book, std::string filename) {
     EofRecord eof_record = EofRecord();
 
     exth_header.addRecord(AUTHOR, mobi_book->author());
+    
+    if (!exth_header.generate()) {
+        std::cout << "error creating the exth header" << std::endl;
+        return false;
+    }
     
     if (!palm_doc_header.generate(static_cast<unsigned int>(mobi_book->html_content().size()),
                                   static_cast<unsigned int>(text_records_.size()))) {
@@ -36,22 +41,17 @@ bool MobiWriter::write(MobiBook *mobi_book, std::string filename) {
         return false;
     }
     
-    if (!exth_header.generate()) {
-        std::cout << "error creating the exth header" << std::endl;
-        return false;
-
-    }
-
     std::string record0 = palm_doc_header.data() + mobi_header.data() + exth_header.data();
         
     std::string book_title_padded = mobi_book->title();
-    size_t book_title_padding = 4 - ((book_title_padded.size() + 2) % 4);
-    book_title_padded.resize(book_title_padded.size() + book_title_padding);
+    size_t book_title_padding = Utils::getFourBytesPadding(book_title_padded.size() + 2);
+    book_title_padded.resize(book_title_padded.size() + book_title_padding + 2);
     
     record0.append(book_title_padded);
     
     std::vector<std::string> records;
     records.push_back(record0);
+    
     
     for (int i = 0; i < text_records_.size(); ++i) {
         records.push_back(text_records_[i]);

@@ -38,6 +38,17 @@ public:
         memcpy(bytes, reinterpret_cast<char *>(&x), sizeof(unsigned int));
     }
     
+    static inline size_t getFourBytesPadding(size_t size)
+    {
+        int padding = 4 - (size % 4);
+        
+        if (padding == 4) {
+            return 0;
+        } else {
+            return padding;
+        }
+    }
+    
     static inline std::string bytesToString(char *bytes, size_t size) {
         std::string string = "";
         string.resize(size);

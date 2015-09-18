@@ -23,7 +23,7 @@ bool PalmDatabaseHeader::generate(std::string mobi_book_title, std::vector<std::
         Utils::stringToBytes("MOBI", palm_database_header_.creator);
         
         Utils::ushortToBytes(records.size(), palm_database_header_.number_of_records);
-        
+
         data_ = Utils::bytesToString(reinterpret_cast<char *>(&palm_database_header_), sizeof(palm_database_header_));
         unsigned int record_data_offset = static_cast<unsigned int>(sizeof(palm_database_header_) + (records.size() * 8) + 2);
         
@@ -33,6 +33,7 @@ bool PalmDatabaseHeader::generate(std::string mobi_book_title, std::vector<std::
             
             Utils::uintToBytes(record_data_offset, record_info_struct.data_offset);
             record_data_offset += records[i].size();
+            
             
             // TODO: define attribute and unique id
             
