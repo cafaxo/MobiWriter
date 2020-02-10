@@ -5,7 +5,7 @@ Minimal writer for the mobipocket format. No images or other fancy stuff like TO
 
 I use this for all my kindle books, because MobiWriter enables me to directly specify the raw html contents of the mobi file. Tools like KindleGen, calibre, etc. add specific formatting nonsense to the html source, that sucks.
 
-####Usage (requires basic html, no css etc.):
+#### Usage (requires basic html, no css etc.):
 
 ```c++
 #include <iostream>
